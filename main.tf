@@ -3,7 +3,9 @@ terraform {
     bucket = "terraform-rajjaaa77"
     key    = "state/terraform.tfstate"
     region = "eu-north-1"
-  }
+  } 
+}   
+
 provider "aws" {
   region = "us-east-1" 
 }
