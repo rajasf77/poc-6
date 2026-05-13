@@ -1,0 +1,29 @@
+name: "Terraform Build"
+
+on:
+  push:
+    branches:
+      - main  # Run this whenever I save to the main folder
+
+jobs:
+  terraform:
+    name: "Run Terraform"
+    runs-on: ubuntu-latest
+    
+    # Use the 'Safe Keys' we stored earlier
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3 # The robot picks up your code
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2 # The robot gets the Magic Wand ready
+
+      - name: Terraform Init
+        run: terraform init # The robot cleans the wand
+
+      - name: Terraform Apply
+        run: terraform apply -auto-approve # The robot waves the wand!
