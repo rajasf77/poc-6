@@ -10,7 +10,7 @@ provider "aws" {
   region = "us-east-1" 
 }
 
-# ECR Warehouse
+# 1. The Warehouse (ECR)
 resource "aws_ecr_repository" "my_app_warehouse" {
   name                 = "poc-app-repo"
   image_tag_mutability = "MUTABLE"
@@ -19,7 +19,7 @@ resource "aws_ecr_repository" "my_app_warehouse" {
   }
 }
 
-# Security Gate
+# 2. The Fence (Security Group)
 resource "aws_security_group" "jenkins_sg" {
   name        = "jenkins_security_group"
   description = "Allow Jenkins traffic"
@@ -46,14 +46,14 @@ resource "aws_security_group" "jenkins_sg" {
   }
 }
 
-# The Free Tier Computer
+# 3. The Free Tier Computer (EC2)
 resource "aws_instance" "jenkins_server" {
-  # This is a standard Amazon Linux 2023 ID for us-east-1
+  # Standard Amazon Linux 2023 AMI for us-east-1
   ami           = "ami-0440d3b780d96b29d" 
-  instance_type = "t2.micro"
+  instance_type = "t2.micro" # <--- CHANGED THIS TO STAY FREE
   vpc_security_group_ids = [aws_security_group.jenkins_sg.id]
 
   tags = {
-    Name = "Jenkins-Server"
+    Name = "Jenkins-Butler-Server"
   }
 }
