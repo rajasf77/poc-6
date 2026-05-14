@@ -9,30 +9,28 @@ terraform {
 provider "aws" {
   region = "us-east-1" 
 }
-#ECR Creation
+
+# ECR Warehouse
 resource "aws_ecr_repository" "my_app_warehouse" {
   name                 = "poc-app-repo"
   image_tag_mutability = "MUTABLE"
-
   image_scanning_configuration {
     scan_on_push = true
   }
 }
-# 3. Create a Security Gate (Security Group)
-# This is like a fence that only lets certain people in.
+
+# Security Gate
 resource "aws_security_group" "jenkins_sg" {
   name        = "jenkins_security_group"
   description = "Allow Jenkins traffic"
 
-  # Opening Port 8080 (Jenkins' front door)
   ingress {
     from_port   = 8080
     to_port     = 8080
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"] # This lets YOU talk to Jenkins from home
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
-  # Opening Port 22 (The back door for maintenance)
   ingress {
     from_port   = 22
     to_port     = 22
@@ -40,7 +38,6 @@ resource "aws_security_group" "jenkins_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  # Let the computer talk to the internet to download things
   egress {
     from_port   = 0
     to_port     = 0
@@ -49,13 +46,14 @@ resource "aws_security_group" "jenkins_sg" {
   }
 }
 
-# 4. The Computer (EC2 Instance)
+# The Free Tier Computer
 resource "aws_instance" "jenkins_server" {
-  ami           = "ami-0c7217cdde317cfec" # This is like picking "Windows" or "Linux"
-  instance_type = "t2.medium"            # The size of the computer (Medium is good for Jenkins)
+  # This is a standard Amazon Linux 2023 ID for us-east-1
+  ami           = "ami-0440d3b780d96b29d" 
+  instance_type = "t2.micro"
   vpc_security_group_ids = [aws_security_group.jenkins_sg.id]
 
   tags = {
-    Name = "Jenkins"
+    Name = "Jenkins-Server"
   }
 }
