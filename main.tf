@@ -56,6 +56,6 @@ resource "aws_instance" "jenkins_server" {
   vpc_security_group_ids = [aws_security_group.jenkins_sg.id]
 
   tags = {
-    Name = "Jenkins-Butler-Server"
+    Name = "Jenkins"
   }
 }
