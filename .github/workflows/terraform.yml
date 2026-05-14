@@ -25,5 +25,5 @@ jobs:
       - name: Terraform Init
         run: terraform init # The robot cleans the wand
 
-      - name: Terraform Destroy
-        run: terraform destroy -auto-approve # The robot waves the wand!
+      - name: Terraform Apply
+        run: terraform apply -auto-approve # The robot waves the wand!
