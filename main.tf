@@ -46,14 +46,13 @@ resource "aws_security_group" "jenkins_sg" {
   }
 }
 
-# 3. The Free Tier Computer (EC2)
+# 3. The New Free Tier Computer (EC2)
 resource "aws_instance" "jenkins_server" {
-  # Standard Amazon Linux 2023 AMI for us-east-1
   ami           = "ami-0440d3b780d96b29d" 
-  instance_type = "t2.micro" # <--- CHANGED THIS TO STAY FREE
+  instance_type = "t3.micro" # <--- CHANGED TO T3 TO BYPASS FREE TIER ERROR
   vpc_security_group_ids = [aws_security_group.jenkins_sg.id]
 
   tags = {
-    Name = "Jenkins-Butler-Server"
+    Name = "Jenkins"
   }
 }
